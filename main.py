@@ -1,12 +1,14 @@
 # Import libraries
 import discord
 from discord.ext import commands
+from config import bot_token
+
+# Get intents to do kool things with data
+intents = discord.Intents.default()
+intents.members = True
 
 # Define bot as client
-client = commands.Bot(command_prefix="Breeze ")
-
-# Remove ehhhh help command so I can make custom one later
-client.remove_command("help")
+client = commands.Bot(command_prefix="Breeze ", intents = intents)
 
 # on_ready event (what do do when bot starts)
 @client.event
@@ -14,10 +16,18 @@ async def on_ready():
     print('Breeze now online!')
     await client.change_presence(activity=discord.Game(name='on Discord'))
 
-# Define cog files
-cogs = ['automod']
+# Remove help command
+client.help_command = None
 
-# Load cog file(s) above
+# Make Help Command Look Smexy
+@client.command()
+async def help(ctx):
+    await ctx.send(file=discord.File(r'help.mp4'))
+
+# Define cog files
+cogs = ['automod', 'admin', 'chat-link', 'tests']
+
+# Load cogs above
 try:
     for cog in cogs:
         client.load_extension(f'cogs.{cog}')
@@ -26,4 +36,4 @@ except Exception as e:
     print(f'Error loading {cog}: {e}')
 
 # Run the bot
-client.run("token")
+client.run(bot_token)

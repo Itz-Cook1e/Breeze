@@ -8,8 +8,6 @@ class AutoMod(commands.Cog):
     self.bot = bot
 
     
-# No command yet :(
-    
 
 # Load up as a cog
 def setup(bot):
